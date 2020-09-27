@@ -66,7 +66,6 @@ function registerValidSW(swUrl, config) {
     });
 }
 
-
 function checkValidServiceWorker(swUrl, config) {
   const NOT_FOUND = 404;
   const NOT_FOUND_IN_ARRAY = -1;
