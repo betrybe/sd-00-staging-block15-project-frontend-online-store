@@ -4,7 +4,6 @@ import { getProductsFromCategoryAndQuery } from './services/api';
 import List from './pages/ProductList';
 import SearchBar from './components/SearchBar';
 import Categoria from './pages/Categorias';
-import Cart from './pages/ShoppingCart';
 import Details from './pages/ProductDetails';
 
 import cartImage from './images/shopping-cart.png';
@@ -128,12 +127,6 @@ class App extends React.Component {
                 path="/"
                 render={ (props) => (
                   <List { ...props } value={ search } addCart={ this.addCart } />
-                ) }
-              />
-              <Route
-                path="/cart"
-                render={ (props) => (
-                  <Cart { ...props } cart={ cart } inc={ this.inc } dec={ this.dec } />
                 ) }
               />
               <Route
