@@ -80,7 +80,7 @@ class App extends React.Component {
 
   inc({ product: { id } }) {
     const { cart, cartSize } = this.state;
-    const newProd = cart.find((prod) => prod.product.id === product.product.id);
+    const newProd = cart.find((prod) => prod.product.id === id);
     if (newProd.product.available_quantity > newProd.quantity) {
       newProd.quantity += 1;
       const arrayIndex = cart.indexOf(cart.find(({ product: { id: ID } }) => ID === id));

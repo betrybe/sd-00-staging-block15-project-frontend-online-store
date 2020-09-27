@@ -6,10 +6,10 @@ class Button extends React.Component {
     return (
       <div>
         <button
-          className={className}
+          className={ className }
           type="button"
-          data-testid={testId}
-          onClick={() => addCart(produto, qnt)}
+          data-testid={ testId }
+          onClick={ () => addCart(produto, qnt) }
         >
           Adicionar Produto
         </button>
