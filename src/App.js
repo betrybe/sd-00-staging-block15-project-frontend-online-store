@@ -65,7 +65,10 @@ class App extends React.Component {
         newProd.quantity += qnt;
         const arrayIndex = cart.indexOf(cart.find((prod) => prod.product === product));
         cart.splice(arrayIndex, arrayIndex + 1);
-        this.setState({ cart: [...cart, newProd], cartSize: Number(cartSize) + Number(qnt) });
+        this.setState({
+          cart: [...cart, newProd],
+          cartSize: Number(cartSize) + Number(qnt),
+        });
       }
     } else {
       this.setState({
@@ -75,12 +78,12 @@ class App extends React.Component {
     }
   }
 
-  inc(product) {
+  inc({ product: { id } }) {
     const { cart, cartSize } = this.state;
     const newProd = cart.find((prod) => prod.product.id === product.product.id);
     if (newProd.product.available_quantity > newProd.quantity) {
       newProd.quantity += 1;
-      const arrayIndex = cart.indexOf(cart.find((prod) => prod.product.id === product.product.id));
+      const arrayIndex = cart.indexOf(cart.find(({ product: { id: ID } }) => ID === id));
       cart.splice(arrayIndex, arrayIndex + 1);
       this.setState({ cart: [...cart, newProd], cartSize: Number(cartSize) + 1 });
     }
@@ -91,16 +94,19 @@ class App extends React.Component {
     const newProd = cart.find((prod) => prod.product.id === product.product.id);
     if (newProd.product.available_quantity > newProd.quantity) {
       newProd.quantity -= 1;
-      const arrayIndex = cart.indexOf(cart.find((prod) => prod.product.id === product.product.id));
+      const arrayIndex = cart.indexOf(cart.find(
+        (prod) => prod.product.id === product.product.id,
+      ));
       cart.splice(arrayIndex, arrayIndex + 1);
       this.setState({ cart: [...cart, newProd], cartSize: Number(cartSize) - 1 });
     }
   }
 
   loadCart() {
+    const DEFAULT_CART_SIZE = 0;
     const cart = JSON.parse(localStorage.getItem('cart'));
     const size = localStorage.getItem('cartSize');
-    this.setState({ cart: cart || [], cartSize: Number(size) || 0 });
+    this.setState({ cart: cart || [], cartSize: Number(size) || DEFAULT_CART_SIZE });
   }
 
   render() {
@@ -108,25 +114,38 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <div className="main">
-          <CartIcon cartImage={cartImage} cartSize={cartSize} />
-          <div className="search-box"><SearchBar onClick={this.getValue} /></div>
+          <CartIcon cartImage={ cartImage } cartSize={ cartSize } />
+          <div className="search-box"><SearchBar onClick={ this.getValue } /></div>
           <div className="products">
-            <Categoria onClick={this.getCategory} reset={this.resetCategory} value={value} />
+            <Categoria
+              onClick={ this.getCategory }
+              reset={ this.resetCategory }
+              value={ value }
+            />
             <Switch>
               <Route
                 exact
                 path="/"
-                render={(props) => <List {...props} value={search} addCart={this.addCart} />}
+                render={ (props) => (
+                  <List { ...props } value={ search } addCart={ this.addCart } />
+                ) }
               />
               <Route
                 path="/cart"
-                render={(props) => <Cart {...props} cart={cart} inc={this.inc} dec={this.dec} />}
+                render={ (props) => (
+                  <Cart { ...props } cart={ cart } inc={ this.inc } dec={ this.dec } />
+                ) }
               />
               <Route
                 path="/details/:id"
-                render={(props) => <Details {...props} addCart={this.addCart} />}
+                render={ (props) => <Details { ...props } addCart={ this.addCart } /> }
               />
-              <Route path="/checkout" render={(props) => <Checkout {...props} cart={cart} />} />
+              <Route
+                path="/checkout"
+                render={ (props) => (
+                  <Checkout { ...props } cart={ cart } />
+                ) }
+              />
             </Switch>
           </div>
         </div>
